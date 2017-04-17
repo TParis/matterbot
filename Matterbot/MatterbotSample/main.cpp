@@ -13,9 +13,9 @@ using namespace lospi;
 
 int main() {
   wstring mattermost_url = L"https://hooks.slack.com",
-    incoming_hook_route = L"services/AAAAAAA/BBBBBBBBB/CCCCCCCCCCCCCCCCCCCC",
-    outgoing_hook_route = L"http://127.0.0.1:8000/",
-    outgoing_hook_token = L"XXXXXXXXXXXXXXXXXXXXX",
+    incoming_hook_route = L"services/T4Z1QAKSS/B50MWS6CX/YJmejxyLjz50lvPrk4FUrYUe",
+    outgoing_hook_route = L"https://971c24a7.ngrok.io",
+    outgoing_hook_token = L"3q3YsAQD376YdVsU5uTjWKh5",
     welcome_message = L"bot is running.";
 
   try {
