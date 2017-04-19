@@ -158,7 +158,6 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\Matterbot\PracticalSocket.cpp" />
     <ClCompile Include="ConsoleLogger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Md5.cpp" />
@@ -177,9 +176,11 @@
     <ClInclude Include="EchoCommand.h" />
     <ClInclude Include="ConsoleLogger.h" />
     <ClInclude Include="GetPassword.h" />
+    <ClInclude Include="LevelCommand.h" />
     <ClInclude Include="Md5.h" />
     <ClInclude Include="Md5Utilities.h" />
     <ClInclude Include="QotdCommand.h" />
+    <ClInclude Include="RestartCommand.h" />
     <ClInclude Include="ReverseCommand.h" />
     <ClInclude Include="StartCommand.h" />
     <ClInclude Include="WeatherCommand.h" />

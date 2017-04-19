@@ -1,16 +1,26 @@
 #pragma once
 #include "Matterbot.h"
 #include <algorithm>
+#include <string>
+#include <iostream>
+#include <ostream>
 #include <time.h>
 #include <vector>
+#include <thread>
+#include <chrono>
+#include <map>
 #include "Md5.h"
 #include "Md5Utilities.h"
 #include "GetPassword.h"
+#include <functional> 
+#include <cctype>
+#include <locale>
 // for convenience
 
 namespace lospi {
 
-	std::vector<std::string> hashtable[2];
+	std::map<std::string, std::string> hashtable;
+	bool hashesBuilt = false;
 
 	struct ChallengesCommand : ICommand {
 		explicit ChallengesCommand(std::shared_ptr<Matterbot> bot) : bot{ bot } { }
@@ -20,25 +30,35 @@ namespace lospi {
 
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
-
-
+			
 			std::vector<std::wstring> challenges;
 			
-			explode(command_text, ' ', challenges);
+			challenges = explode(command_text, L' ');
 			
-			checkHashes(challenges);
+			if (hashesBuilt == false) {
+				toBuild = pow(4, level + 11);
+				buildHashTable(level);
+				hashesBuilt = true;
+			}
+
+			bot->post_message(L"rivestment try" + string_to_wstring(checkHashes(challenges)));
+			sleep(1000);
+
+			return string_to_wstring(trim(std::string("rivestment challenge")));
+
 		}
 
-		void explode(const std::wstring input, char sep, std::vector<std::wstring> output) {
+		std::vector<std::wstring> explode(const std::wstring input, wchar_t sep) {
 			std::wstring tmp;
-			tmp.resize(33);
-			tmp[32] = '\0';
+			std::vector<std::wstring> output;
+			tmp.resize(32);
 			int i = 0;
 			int j = 0;
-			while(input[i] != EOF) {
+			while(input[i]) {
 				if (input[i] == sep) {
 					output.push_back(tmp);
-					tmp = L"";
+					tmp.clear();
+					tmp.resize(32);
 					j = 0;
 				}
 				else {
@@ -46,29 +66,110 @@ namespace lospi {
 				}
 				i++;
 			}
+
+			return output;
 		}
 
-		void checkHashes(std::vector<std::wstring> hashes) {
-			
-
-			for (int i = 0; i < hashes.size(); i++) {
-				crackHash(hashes[i]);
-			}
-		}
-
-		void crackHash(std::wstring hash, std::wstring brute = L"", int depth = 0) {
+		void buildHashTable(int level, std::wstring old_hash = L"", int depth = 1) {
 
 			for (int i = 0; i < 4; i++) {
 				std::wstring alphabet = L"hsoj";
-				brute = brute + alphabet[i];
-				std::wstring tmp = hash + password;
-				auto md5 = get_md5_from_str(tmp);
-				unsigned char * mymd5 = md5.data();
-				/*std::string mymd5_str (mymd5, 32);
-				if (mymd5_str == wstring_to_string(hash)) {
-					return hash
-				}*/
+				std::wstring new_hash = old_hash + alphabet[i];
+				std::wstring tmp = new_hash + password;
+				std::string tmp2 = wstring_to_string(tmp);
+				char * tmp3 = (char *)calloc(1, tmp2.size());
+				strcpy(tmp3, tmp2.c_str());
+				auto md5 = compute_md5(tmp3, tmp2.size());
+				std::wstring mymd5_str = get_str_from_md5(md5);
+				if (depth >= level) {
+					hashtable[wstring_to_string(mymd5_str)] = wstring_to_string(tmp);
+					numHashesBuilt++;
+				}
+				if (depth <= level + 10 && numHashesBuilt < toBuild) {
+					buildHashTable(level, new_hash, depth + 1);
+				}
 			}
+		}
+
+		std::string checkHashes(std::vector<std::wstring> hashes) {
+
+			std::string responseText{ 0 };
+
+			for (int i = 0; i < hashes.size(); i++) {
+				if (hashtable[wstring_to_string(hashes[i])] != "") {
+					responseText += hashtable[wstring_to_string(hashes[i])] + " ";
+				}
+			}
+
+			return responseText;
+		}
+
+		/*void checkHashes(std::vector<std::wstring> hashes) {
+			
+
+			for (int i = 0; i < hashes.size(); i++) {
+				
+				std::wstring retn = crackHash(hashes[i]);
+
+				if (retn != L"")
+				{
+					bot->post_message(L"rivestment try " + retn);
+					sleep(1000);
+				}
+				else
+				{
+					bot->post_message(L"Could not crack " + hashes[i]);
+					sleep(1000);
+				}
+
+			}
+		}
+
+		std::wstring crackHash(std::wstring hash, std::wstring old_brute = L"", int depth = 0) {
+
+			for (int i = 0; i < 4; i++) {
+				std::wstring alphabet = L"hsoj";
+				std::wstring new_brute = old_brute + alphabet[i];
+				std::wstring tmp = new_brute + password;
+				std::string tmp2 = wstring_to_string(tmp);
+				char * tmp3 = (char *)calloc(1, tmp2.size());
+				strcpy(tmp3, tmp2.c_str());
+				auto md5 = compute_md5(tmp3, tmp2.size());
+				std::wstring mymd5_str = get_str_from_md5(md5);
+				if (mymd5_str == hash)
+				{
+					return tmp;
+				}
+				else if (depth < 10)
+				{
+					std::wstring retn = crackHash(hash, new_brute, depth + 1);
+					if (retn != L"") {
+						return retn;
+					}
+				}
+			}
+			return L"";
+		}*/
+		void sleep(int time) {
+			std::this_thread::sleep_for(std::chrono::milliseconds(time));
+		}
+		// trim from start
+		static inline std::string &ltrim(std::string &s) {
+			s.erase(s.begin(), std::find_if(s.begin(), s.end(),
+				std::not1(std::ptr_fun<int, int>(std::isspace))));
+			return s;
+		}
+
+		// trim from end
+		static inline std::string &rtrim(std::string &s) {
+			s.erase(std::find_if(s.rbegin(), s.rend(),
+				std::not1(std::ptr_fun<int, int>(std::isspace))).base(), s.end());
+			return s;
+		}
+
+		// trim from both ends
+		static inline std::string &trim(std::string &s) {
+			return ltrim(rtrim(s));
 		}
 	private:
 		std::shared_ptr<Matterbot> bot;

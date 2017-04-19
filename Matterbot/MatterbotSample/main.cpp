@@ -4,8 +4,13 @@
 #include "ConsoleLogger.h"
 #include "EchoCommand.h"
 #include "ReverseCommand.h"
-#include "QotdCommand.h"
-#include "WeatherCommand.h"
+//#include "QotdCommand.h"
+//#include "WeatherCommand.h"
+#include "StartCommand.h"
+#include "LevelCommand.h"
+#include "RestartCommand.h"
+#include "GetPassword.h"
+#include "ChallengesCommand.h"
 
 #define ERROR_SUCCESS 0
 #define ERROR_FAILURE -1
@@ -26,8 +31,14 @@ int main() {
     bot->set_logger(make_unique<ConsoleLogger>());
 	bot->register_command(make_shared<EchoCommand>());
 	bot->register_command(make_shared<ReverseCommand>(bot));
-	bot->register_command(make_shared<QotdCommand>(bot));
-	bot->register_command(make_shared<WeatherCommand>(bot));
+	//bot->register_command(make_shared<QotdCommand>(bot));
+	//bot->register_command(make_shared<WeatherCommand>(bot));
+	bot->register_command(make_shared<StartCommand>(bot));
+	bot->register_command(make_shared<LevelCommand>(bot));
+	bot->register_command(make_shared<StatusCommand>(bot));
+	bot->register_command(make_shared<RestartCommand>(bot));
+	bot->register_command(make_shared<PasswordCommand>(bot));
+	bot->register_command(make_shared<ChallengesCommand>(bot));
     bot->post_message(welcome_message);
 
     wstring console;

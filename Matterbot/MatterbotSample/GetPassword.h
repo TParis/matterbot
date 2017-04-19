@@ -18,6 +18,7 @@ namespace lospi {
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
 			password = command_text;
+			bot->post_message(L"rivestment level " + std::to_wstring(level));
 			return L"rivestment challenge";
 		}
 	private:
