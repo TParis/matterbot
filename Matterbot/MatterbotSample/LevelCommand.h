@@ -29,7 +29,7 @@ namespace lospi {
 			}
 			level = std::stoi(command_text);
 			lvlChanged = true;
-			hashesBuilt = 0;
+			hashesBuilt = false;
 			return L"Level has been changed to " + std::to_wstring(level);
 		}
 	private:
