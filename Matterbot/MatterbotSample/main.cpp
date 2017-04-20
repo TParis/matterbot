@@ -33,12 +33,15 @@ int main() {
 	bot->register_command(make_shared<ReverseCommand>(bot));
 	//bot->register_command(make_shared<QotdCommand>(bot));
 	//bot->register_command(make_shared<WeatherCommand>(bot));
-	bot->register_command(make_shared<StartCommand>(bot));
+	bot->register_command(make_shared<StartCommand>(bot)); 
 	bot->register_command(make_shared<LevelCommand>(bot));
 	bot->register_command(make_shared<StatusCommand>(bot));
 	bot->register_command(make_shared<RestartCommand>(bot));
-	bot->register_command(make_shared<PasswordCommand>(bot));
-	bot->register_command(make_shared<ChallengesCommand>(bot));
+	bot->register_command(make_shared<PasswordCommand>(bot)); 
+	bot->register_command(make_shared<HardRestartCommand>(bot));
+	auto chl_ptr = make_shared<ChallengesCommand>(bot);
+	bot->register_command(chl_ptr);
+	bot->register_command(make_shared<ScrapsCommand>(bot, chl_ptr));
     bot->post_message(welcome_message);
 
     wstring console;

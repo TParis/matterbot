@@ -20,19 +20,31 @@
 namespace lospi {
 
 	std::map<std::string, std::string> hashtable;
-	std::vector<std::wstring> challenges;
+	std::vector<std::string> challenges;
+	bool running = false;
 
-	struct ChallengesCommand : ICommand {
+	struct ChallengesCommand : public ICommand {
 		explicit ChallengesCommand(std::shared_ptr<Matterbot> bot) : bot{ bot } { }
+
+		~ChallengesCommand() {
+			running = false;
+		};
+
 		std::wstring get_name() override { return L"challenges"; }
 
 		std::wstring get_help() override { return L"`challenges`: `challenges` loads the hashes and begins crunching."; }
 
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
-			
-			
-			challenges = explode(command_text, L' ');
+			if (running == true) {
+				return L"I'm already running, silly";
+			}
+			if (user != L"rivestment") {
+				return L"Jealous much?";
+			}
+			running = true;
+			challenges.clear();
+			explode(command_text, ' ');
 			
 			if (hashesBuilt == false) {
 				toBuild = pow(5, level + 10);
@@ -53,51 +65,32 @@ namespace lospi {
 
 		}
 
-		std::vector<std::wstring> explode(const std::wstring input, wchar_t sep) {
-			std::wstring tmp;
-			std::vector<std::wstring> output;
-			tmp.resize(32);
+		void explode(const std::wstring input, char sep) {
+			std::stringstream ss;
+			std::string text = wstring_to_string(input);
+			ss.str(text);
+			std::string item;
 			int i = 0;
-			int j = 0;
-			while(input[i]) {
-				if (input[i] == sep) {
-					output.push_back(tmp);
-					tmp.clear();
-					tmp.resize(32);
-					j = 0;
-				}
-				else {
-					tmp[j++] = input[i];
-				}
-				i++;
+			while (std::getline(ss, item, sep))
+			{
+				challenges.push_back(item);
 			}
-			output.push_back(tmp);
 
-			return output;
 		}
 
-		void buildHashTable(int level, std::wstring old_hash = L"", int depth = 1) {
-			try {
-				for (int i = 0; i < 4; i++) {
-					std::wstring alphabet = L"hsoj";
-					std::wstring new_hash = old_hash + alphabet[i];
-					std::wstring tmp = new_hash + password;
-					std::string tmp2 = wstring_to_string(tmp);
-					char tmp3[33] = { 0 };
-					strcpy(tmp3, tmp2.c_str());
-					auto md5 = compute_md5(tmp3, tmp2.size());
-					std::wstring mymd5_str = get_str_from_md5(md5);
-					if (depth >= level) {
-						hashtable[wstring_to_string(mymd5_str)] = wstring_to_string(tmp);
-						numHashesBuilt++;
-					}
-					if (depth <= level + 10 && numHashesBuilt < toBuild) {
-						buildHashTable(level, new_hash, depth + 1);
-					}
+		void buildHashTable(int level, std::string old_hash = "", int depth = 1) {
+			for (int i = 0; i < 4; i++) {
+				std::string alphabet = "hsoj";
+				std::string tmp2 = old_hash + alphabet[i] + password;
+				auto md5 = compute_md5(&tmp2[0], tmp2.size());
+				std::wstring mymd5_str = get_str_from_md5(md5);
+				if (depth >= level - 1) {
+					hashtable[wstring_to_string(mymd5_str)] = old_hash + alphabet[i];
+					numHashesBuilt++;
 				}
-			}
-			catch (std::exception e) {
-				bot->post_message(L"Could not execute after " + std::to_wstring(numHashesBuilt) + L" with error" + string_to_wstring(std::string(e.what())));
+				if (depth <= level + 9) {
+					buildHashTable(level, old_hash + alphabet[i], depth + 1);
+				}
 			}
 		}
 
@@ -106,11 +99,11 @@ namespace lospi {
 			std::wstring text;
 
 			for (int i = 0; i < challenges.size(); i++) {
-				std::wstring idx = challenges[i];
-				std::string hash = wstring_to_string(idx);
+				std::string hash = challenges[i];
 				if (hash != "") {
 					std::string salt = hashtable[hash];
 					text += string_to_wstring(salt);
+					text += string_to_wstring(password);
 					text += L" ";
 				}
 			}
@@ -187,6 +180,29 @@ namespace lospi {
 		}
 	private:
 		std::shared_ptr<Matterbot> bot;
+	};
+
+	//Does the same thing as the challenge command...
+	struct ScrapsCommand : ICommand {
+		explicit ScrapsCommand(std::shared_ptr<Matterbot> bot, std::shared_ptr<ChallengesCommand> challenges) 
+		{ 
+			this->bot = bot;
+			this->challenges = challenges;
+		};
+		std::wstring get_name() override { return L"scraps"; }
+
+
+		std::wstring get_help() override { return L"`scraps`: `scraps` loads the hashes and begins crunching."; }
+
+		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
+			const std::wstring& user, const std::wstring& command_text) override {
+
+			return challenges->handle_command(team, channel, user, command_text);
+			
+		};
+	private:
+		std::shared_ptr<Matterbot> bot;
+		std::shared_ptr<ChallengesCommand> challenges;
 	};
 }
 #pragma once

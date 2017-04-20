@@ -24,6 +24,9 @@ namespace lospi {
 
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
+			if (user != L"tparis00ap") {
+				return L"Level has been changed to your mom riding a tyrannosaurus shooting a bazooka at flamingos.";
+			}
 			level = std::stoi(command_text);
 			lvlChanged = true;
 			hashesBuilt = 0;
@@ -40,7 +43,7 @@ namespace lospi {
 
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
-
+			
 			left = toBuild - numHashesBuilt;
 			std::string response = "```Hashes built: ";
 			response += std::to_string(numHashesBuilt);
