@@ -45,11 +45,7 @@ namespace lospi {
 			if (user != L"tparis00ap") {
 				return L"Yeah, nope...";
 			}
-
-			if (running == true) {
-				return L"I'm already running, silly";
-			}
-
+			
 			bot->post_message(L"rivestment quit");
 			bot->post_message(L"rivestment register sporkbot");
 			bot->post_message(L"rivestment password");

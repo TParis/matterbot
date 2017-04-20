@@ -53,7 +53,7 @@ namespace lospi {
 			hashes = trim(hashes);
 			bot->post_message(L"rivestment try " + hashes);
 			
-			sleep(3000);
+			sleep(2100);
 			if (lvlChanged) {
 				lvlChanged = false;
 				bot->post_message(L"rivestment level " + std::to_wstring(level));
@@ -81,11 +81,11 @@ namespace lospi {
 				std::string tmp2 = old_hash + alphabet[i] + password;
 				auto md5 = compute_md5(&tmp2[0], tmp2.size());
 				std::wstring mymd5_str = get_str_from_md5(md5);
-				if (depth >= level - 1) {
+				if (depth >= level) {
 					hashtable[to_tiny_val(wstring_to_string(mymd5_str))] = old_hash + alphabet[i];
 					numHashesBuilt++;
 				}
-				if (depth <= level + 9) {
+				if (depth < level + 10) {
 					buildHashTable(level, old_hash + alphabet[i], depth + 1);
 				}
 			}
@@ -99,9 +99,15 @@ namespace lospi {
 				std::string hash = challenges[i];
 				if (hash != "") {
 					std::string salt = hashtable[to_tiny_val(hash)];
-					text += string_to_wstring(salt);
-					text += string_to_wstring(password);
-					text += L" ";
+					if (salt != "") {
+						text += string_to_wstring(salt);
+						text += string_to_wstring(password);
+						text += L" ";
+					}
+					else
+					{
+						bot->post_message(L"Could not find" + string_to_wstring(salt));
+					}
 				}
 			}
 
