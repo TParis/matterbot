@@ -20,6 +20,11 @@ namespace lospi {
 				return L"Yeah, nope...";
 			}
 
+
+			if (running == true) {
+				return L"I'm already running, silly";
+			}
+
 			bot->post_message(L"rivestment password");
 			bot->post_message(L"rivestment scraps");
 			return L"";
@@ -39,6 +44,10 @@ namespace lospi {
 
 			if (user != L"tparis00ap") {
 				return L"Yeah, nope...";
+			}
+
+			if (running == true) {
+				return L"I'm already running, silly";
 			}
 
 			bot->post_message(L"rivestment quit");

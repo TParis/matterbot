@@ -6,8 +6,8 @@
 #include "ReverseCommand.h"
 //#include "QotdCommand.h"
 //#include "WeatherCommand.h"
-#include "StartCommand.h"
 #include "LevelCommand.h"
+#include "StartCommand.h"
 #include "RestartCommand.h"
 #include "GetPassword.h"
 #include "ChallengesCommand.h"
@@ -33,8 +33,8 @@ int main() {
 	bot->register_command(make_shared<ReverseCommand>(bot));
 	//bot->register_command(make_shared<QotdCommand>(bot));
 	//bot->register_command(make_shared<WeatherCommand>(bot));
-	bot->register_command(make_shared<StartCommand>(bot)); 
 	bot->register_command(make_shared<LevelCommand>(bot));
+	bot->register_command(make_shared<StartCommand>(bot)); 
 	bot->register_command(make_shared<StatusCommand>(bot));
 	bot->register_command(make_shared<RestartCommand>(bot));
 	bot->register_command(make_shared<PasswordCommand>(bot)); 
