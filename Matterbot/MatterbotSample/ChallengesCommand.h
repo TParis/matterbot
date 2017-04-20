@@ -44,7 +44,7 @@ namespace lospi {
 			explode(command_text, ' ');
 			
 			if (hashesBuilt == false) {
-				toBuild = pow(5, level + 10);
+				toBuild = (int)pow(5, level + 10);
 				buildHashTable(level);
 				hashesBuilt = true;
 			}
@@ -54,7 +54,7 @@ namespace lospi {
 			hashes = trim(hashes);
 			bot->post_message(L"rivestment try " + hashes);
 			
-			sleep(2100);
+			sleep(4000);
 			if (lvlChanged) {
 				lvlChanged = false;
 				bot->post_message(L"rivestment level " + std::to_wstring(level));
@@ -80,7 +80,7 @@ namespace lospi {
 			for (int i = 0; i < 4; i++) {
 				std::string alphabet = "hsoj";
 				std::string tmp2 = old_hash + alphabet[i] + password;
-				auto md5 = compute_md5(&tmp2[0], tmp2.size());
+				auto md5 = compute_md5(&tmp2[0], (unsigned long)tmp2.size());
 				std::wstring mymd5_str = get_str_from_md5(md5);
 				if (depth >= level - 1) {
 					hashtable[md5] = old_hash + alphabet[i];

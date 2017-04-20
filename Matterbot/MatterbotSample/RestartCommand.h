@@ -19,21 +19,14 @@ namespace lospi {
 			if (user != L"tparis00ap") {
 				return L"Yeah, nope...";
 			}
-
-
-			if (running == true) {
-				return L"I'm already running, silly";
-			}
-
+			
 			bot->post_message(L"rivestment password");
-
-
+			
 			if (lvlChanged) {
 				lvlChanged = false;
 				bot->post_message(L"rivestment level " + std::to_wstring(level));
 			}
-
-
+			
 			bot->post_message(L"rivestment scraps");
 			return L"";
 		}
