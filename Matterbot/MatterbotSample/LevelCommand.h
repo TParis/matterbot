@@ -2,14 +2,18 @@
 #include "Matterbot.h"
 #include <algorithm>
 #include <time.h>
+#include "Md5.h"
+#include "Md5Utilities.h"
 
 // for convenience
 
 namespace lospi {
 
 	int level = 1;
-	long long int numHashesBuilt = 0;
-	long long int toBuild;
+	long unsigned int numHashesBuilt = 0;
+	long unsigned int toBuild;
+	long unsigned int left;
+	bool hashesBuilt = false;
 
 	struct LevelCommand : ICommand {
 		explicit LevelCommand(std::shared_ptr<Matterbot> bot) : bot{ bot } { }
@@ -20,6 +24,7 @@ namespace lospi {
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
 			level = std::stoi(command_text);
+			hashesBuilt = 0;
 			return L"Level has been changed to " + std::to_wstring(level);
 		}
 	private:
@@ -34,8 +39,15 @@ namespace lospi {
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
 
-			long long int left = toBuild - numHashesBuilt;
-			return L"Hashes built: " + std::to_wstring(numHashesBuilt) + L"\nBuilding:" + std::to_wstring(toBuild) + L"\nLeft:" + std::to_wstring(left);
+			left = toBuild - numHashesBuilt;
+			std::string response = "```Hashes built: ";
+			response += std::to_string(numHashesBuilt);
+			response += "\nBuilding:     ";
+			response += std::to_string(toBuild);
+			response += "\nLeft:         ";
+			response += std::to_string(left);
+			response += "```";
+			return string_to_wstring(response);
 		}
 	private:
 		std::shared_ptr<Matterbot> bot;
