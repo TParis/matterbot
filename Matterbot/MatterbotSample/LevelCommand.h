@@ -10,6 +10,7 @@
 namespace lospi {
 
 	int level = 1;
+	bool lvlChanged = false;
 	long unsigned int numHashesBuilt = 0;
 	long unsigned int toBuild;
 	long unsigned int left;
@@ -24,6 +25,7 @@ namespace lospi {
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
 			level = std::stoi(command_text);
+			lvlChanged = true;
 			hashesBuilt = 0;
 			return L"Level has been changed to " + std::to_wstring(level);
 		}

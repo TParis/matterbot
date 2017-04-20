@@ -46,8 +46,9 @@ namespace lospi {
 			bot->post_message(L"rivestment try " + hashes);
 			
 			sleep(3000);
-
-			bot->post_message(L"rivestment level " + std::to_wstring(level));
+			if (lvlChanged) {
+				bot->post_message(L"rivestment level " + std::to_wstring(level));
+			}
 			return L"rivestment challenge";
 
 		}
