@@ -54,6 +54,13 @@ namespace lospi {
 			response += "```";
 			return string_to_wstring(response);
 		}
+		int calcHashTotal(int level = 0) {
+			int total = 0;
+			for (int i = 0; i <= level; i++) {
+				total += (int)pow(4, level);
+			}
+			return total;
+		}
 	private:
 		std::shared_ptr<Matterbot> bot;
 	};

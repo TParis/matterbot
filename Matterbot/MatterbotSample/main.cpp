@@ -20,10 +20,10 @@ using namespace std;
 using namespace lospi;
 
 int main() {
-  wstring mattermost_url = L"https://hooks.slack.com",
-    incoming_hook_route = L"services/T4Z1QAKSS/B50MWS6CX/YJmejxyLjz50lvPrk4FUrYUe",
+  wstring mattermost_url = L"https://hooks.slack.com/",
+    incoming_hook_route = L"services/T4Z1QAKSS/B52GB6HUK/uDnXu91NWcROjvTvrzFwxshv",
     outgoing_hook_route = L"http://127.0.0.1:4928/",
-    outgoing_hook_token = L"3q3YsAQD376YdVsU5uTjWKh5",
+    outgoing_hook_token = L"2Chtn3qyOS2jOq2eISUQMV3v",
     welcome_message = L"bot is running.";
 
   try {

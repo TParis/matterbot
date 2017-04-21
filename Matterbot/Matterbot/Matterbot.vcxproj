@@ -22,7 +22,7 @@
     <ProjectGuid>{09DC1DE3-3212-4ADE-8C51-836AF911ACA5}</ProjectGuid>
     <Keyword>Win32Proj</Keyword>
     <RootNamespace>Matterbot</RootNamespace>
-    <WindowsTargetPlatformVersion>10.0.14393.0</WindowsTargetPlatformVersion>
+    <WindowsTargetPlatformVersion>8.1</WindowsTargetPlatformVersion>
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'" Label="Configuration">

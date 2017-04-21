@@ -4,7 +4,6 @@
 #include <string>
 #include <iostream>
 #include <ostream>
-#include <time.h>
 #include <vector>
 #include <thread>
 #include <chrono>
@@ -22,6 +21,8 @@ namespace lospi {
 
 	std::map<Md5Digest, std::string> hashtable;
 	std::vector<std::string> challenges;
+	int lospi::calcHashTotal(int level = 0);
+	
 
 	struct ChallengesCommand : public ICommand {
 		explicit ChallengesCommand(std::shared_ptr<Matterbot> bot) : bot{ bot } { }
@@ -44,7 +45,7 @@ namespace lospi {
 			explode(command_text, ' ');
 			
 			if (hashesBuilt == false) {
-				toBuild = (int)pow(5, level + 10);
+				toBuild = calcHashTotal(level);
 				buildHashTable(level);
 				hashesBuilt = true;
 			}
@@ -170,20 +171,17 @@ namespace lospi {
 		static inline std::wstring &trim(std::wstring &s) {
 			return ltrim(rtrim(s));
 		}
-		//uint16_t to_tiny_val(std::string &digest) {
-		//	std::map<char, char> hexmap = { { '0', 0x0 }, { '1', 0x1 }, { '2', 0x2 }, { '3', 0x3 }, \
-		//									{ '4', 0x4 }, { '5', 0x5 }, { '6', 0x6 }, { '7', 0x7 }, \
-		//									{ '8', 0x8 }, { '9', 0x9 }, { 'a', 0xa }, { 'b', 0xb }, \
-		//									{ 'c', 0xc }, { 'd', 0xd }, { 'e', 0xe }, { 'f', 0xf } };
+		uint2_t to_tiny_val(std::string &digest) {
+			std::map<char, char> hexmap = { { 'h', 0x0 }, { 's', 0x1 }, { 'o', 0x2 }, { 'j', 0x3 } };
 
-		//	uint16_t myVal = 0x0;
+			uint16_t myVal = 0x0;
 
-		//	for (int i = 0; i <digest.size(); i++) {
-		//		myVal <<= 4;
-		//		myVal |= hexmap[digest[i]];
-		//	}
-		//	return myVal;
-		//}
+			for (int i = 0; i <digest.size(); i++) {
+				myVal <<= 4;
+				myVal |= hexmap[digest[i]];
+			}
+			return myVal;
+		}
 	private:
 		std::shared_ptr<Matterbot> bot;
 	};
