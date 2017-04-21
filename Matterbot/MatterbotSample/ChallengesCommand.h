@@ -59,7 +59,7 @@ namespace lospi {
 				lvlChanged = false;
 				bot->post_message(L"rivestment level " + std::to_wstring(level));
 			}
-			return L"rivestment challenge";
+			return L"rivestment challenge 75";
 
 		}
 
@@ -152,9 +152,6 @@ namespace lospi {
 			}
 			return L"";
 		}*/
-		void sleep(int time) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(time));
-		}
 		// trim from start
 		static inline std::wstring &ltrim(std::wstring &s) {
 			s.erase(s.begin(), std::find_if(s.begin(), s.end(),

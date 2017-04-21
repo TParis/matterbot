@@ -22,4 +22,7 @@ namespace lospi
 			return command_text;
 		}
 	};
+	void sleep(int time) {
+		std::this_thread::sleep_for(std::chrono::milliseconds(time));
+	}
 }

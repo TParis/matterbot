@@ -26,7 +26,7 @@ namespace lospi {
 				lvlChanged = false;
 				bot->post_message(L"rivestment level " + std::to_wstring(level));
 			}
-			
+			sleep(3000);
 			bot->post_message(L"rivestment scraps");
 			return L"";
 		}
@@ -56,6 +56,7 @@ namespace lospi {
 				bot->post_message(L"rivestment level " + std::to_wstring(level));
 			}
 
+			sleep(3000);
 			bot->post_message(L"rivestment challenge");
 			return L"";
 		}
