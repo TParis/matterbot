@@ -45,21 +45,17 @@ namespace lospi {
 			const std::wstring& user, const std::wstring& command_text) override {
 			
 			left = toBuild - numHashesBuilt;
+			double prct = ((double)numHashesBuilt / toBuild) * 100.00;
 			std::string response = "```Hashes built: ";
 			response += std::to_string(numHashesBuilt);
 			response += "\nBuilding:     ";
 			response += std::to_string(toBuild);
 			response += "\nLeft:         ";
 			response += std::to_string(left);
-			response += "```";
+			response += "\nPercent:      ";
+			response += std::to_string(prct);
+			response += "%```";
 			return string_to_wstring(response);
-		}
-		int calcHashTotal(int level = 0) {
-			int total = 0;
-			for (int i = 0; i <= level; i++) {
-				total += (int)pow(4, level);
-			}
-			return total;
 		}
 	private:
 		std::shared_ptr<Matterbot> bot;

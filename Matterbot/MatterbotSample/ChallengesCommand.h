@@ -19,9 +19,9 @@
 
 namespace lospi {
 
-	std::map<Md5Digest, std::string> hashtable;
+	std::map<Md5Digest, uint64_t> hashtable;
 	std::vector<std::string> challenges;
-	int lospi::calcHashTotal(int level = 0);
+	std::string alphabet = "hsoj";
 	
 
 	struct ChallengesCommand : public ICommand {
@@ -60,7 +60,7 @@ namespace lospi {
 				lvlChanged = false;
 				bot->post_message(L"rivestment level " + std::to_wstring(level));
 			}
-			return L"rivestment challenge 75";
+			return L"rivestment challenge " + std::to_wstring(number);
 
 		}
 
@@ -77,20 +77,39 @@ namespace lospi {
 
 		}
 
-		void buildHashTable(int level, std::string old_hash = "", int depth = 1) {
-			for (int i = 0; i < 4; i++) {
-				std::string alphabet = "hsoj";
-				std::string tmp2 = old_hash + alphabet[i] + password;
-				auto md5 = compute_md5(&tmp2[0], (unsigned long)tmp2.size());
-				std::wstring mymd5_str = get_str_from_md5(md5);
-				if (depth >= level - 1) {
-					hashtable[md5] = old_hash + alphabet[i];
+		//void buildHashTable(int level, std::string old_hash = "", int depth = 1) {
+		//	for (int i = 0; i < 4; i++) {
+		//		if (depth >= level - 1) {
+		//			string test = old_hash + alphabet[i] + password;
+		//			hashtable[compute_md5(test.c_str(), (unsigned long)(depth - 1))] = to_tiny_val(old_hash + alphabet[i]);
+		//			numHashesBuilt++;
+		//		}
+		//		if (depth < level + 10) {
+		//			buildHashTable(level, old_hash + alphabet[i], depth + 1);
+		//		}
+		//	}
+		//}
+
+		void buildHashTable(int level) {
+
+			for (int i = level - 1; i < level + 10; i++) {
+				auto combos = Combinator("hsoj", i);
+				while (combos.has_next()) {
+					auto c = combos.next();
+					std::string salt(c.begin(), c.end());
+					std::copy(password.begin(), password.end(), back_inserter(c));
+					hashtable[compute_md5(c.data(), c.size())] = to_tiny_val(salt.substr(0, i));
 					numHashesBuilt++;
 				}
-				if (depth < level + 10) {
-					buildHashTable(level, old_hash + alphabet[i], depth + 1);
-				}
 			}
+		}
+
+		int calcHashTotal(int level = 1) {
+			int total = 0;
+			for (int i = level - 1; i <= level + 10; i++) {
+				total += (int)pow(4, i);
+			}
+			return total;
 		}
 
 		std::wstring checkHashes() {
@@ -98,7 +117,7 @@ namespace lospi {
 			std::wstring text;
 
 			for (int i = 0; i < challenges.size(); i++) {
-				std::string salt = hashtable[get_md5_from_str(string_to_wstring(challenges[i]))];
+				std::string salt = from_tiny_val(hashtable[get_md5_from_str(string_to_wstring(challenges[i]))]);
 				text += string_to_wstring(salt);
 				text += string_to_wstring(password);
 				text += L" ";
@@ -171,15 +190,31 @@ namespace lospi {
 		static inline std::wstring &trim(std::wstring &s) {
 			return ltrim(rtrim(s));
 		}
-		uint2_t to_tiny_val(std::string &digest) {
-			std::map<char, char> hexmap = { { 'h', 0x0 }, { 's', 0x1 }, { 'o', 0x2 }, { 'j', 0x3 } };
+		uint64_t to_tiny_val(std::string &digest) {
+			std::map<char, char> hexmap = { { 'h', 0x1 }, { 's', 0x2 }, { 'o', 0x3 }, { 'j', 0x4 } };
 
-			uint16_t myVal = 0x0;
+			uint64_t myVal = 0x0;
 
 			for (int i = 0; i <digest.size(); i++) {
-				myVal <<= 4;
+				myVal <<= 3;
 				myVal |= hexmap[digest[i]];
 			}
+			return myVal;
+		}
+
+		std::string from_tiny_val(uint64_t myInt) {
+
+			std::map<char, char> hexmap = { { 0x0, 0x0}, {0x1, 'h' }, { 0x2, 's' }, { 0x3, 'o' }, { 0x4, 'j' } };
+
+			std::string myVal;
+
+			for (int i = 0; i < sizeof(uint64_t) * 4; i++) {
+				if (hexmap[myInt & 0x7] != 0x0) {
+					myVal += hexmap[myInt & 0x7];
+				}
+				myInt >>= 3;
+			}
+			reverse(myVal.begin(), myVal.end());
 			return myVal;
 		}
 	private:

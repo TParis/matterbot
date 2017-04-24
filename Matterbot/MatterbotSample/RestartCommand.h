@@ -57,8 +57,7 @@ namespace lospi {
 			}
 
 			sleep(3000);
-			bot->post_message(L"rivestment challenge");
-			return L"";
+			return L"rivestment challenge " + std::to_wstring(number);
 		}
 	private:
 		std::shared_ptr<Matterbot> bot;

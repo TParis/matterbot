@@ -180,6 +180,7 @@
     <ClInclude Include="LevelCommand.h" />
     <ClInclude Include="Md5.h" />
     <ClInclude Include="Md5Utilities.h" />
+    <ClInclude Include="NumberCommand.h" />
     <ClInclude Include="QotdCommand.h" />
     <ClInclude Include="RestartCommand.h" />
     <ClInclude Include="ReverseCommand.h" />
