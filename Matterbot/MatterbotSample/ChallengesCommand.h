@@ -45,9 +45,9 @@ namespace lospi {
 			explode(command_text, ' ');
 			
 			if (hashesBuilt == false) {
+				hashesBuilt = true;
 				toBuild = calcHashTotal(level);
 				buildHashTable(level);
-				hashesBuilt = true;
 			}
 
 			std::wstring hashes{ 0 };
