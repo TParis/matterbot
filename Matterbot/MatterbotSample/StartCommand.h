@@ -19,9 +19,9 @@ namespace lospi {
 			std::wstring response { 0 };
 
 			response = L"`start`: `start` will begin the process to crunch hashes.\n";
-			response += L"\t`-t`: `-t [number]` sets the timer interval\n";
-			response += L"\t`-n`: `-n [number]` sets challenges requested\n";
-			response += L"\t`-l`: `-l [number]` sets level requested\n";
+			response += L"\t`-t [number]`: `-t` sets the timer interval\n";
+			response += L"\t`-n [number]`: `-n` sets challenges requested\n";
+			response += L"\t`-l [number]`: `-l` sets level requested\n";
 			return response;
 		}
 

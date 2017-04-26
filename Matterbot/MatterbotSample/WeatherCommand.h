@@ -16,7 +16,7 @@ namespace lospi {
 		explicit WeatherCommand(std::shared_ptr<Matterbot> bot) : bot{ bot } { }
 		std::wstring get_name() override { return L"weather"; }
 
-		std::wstring get_help() override { return L"`weather [city]`: `weather` will give you a the weather for San Antonio."; }
+		std::wstring get_help() override { return L"`weather`: `weather` will give you a the weather for San Antonio."; }
 
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
