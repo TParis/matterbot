@@ -26,11 +26,13 @@ namespace lospi {
 			string JSON = isolateJSON(&omdb);
 			wstring mystr;
 
-			if (user == L"bean") {
+			if (user == L"bean")
+			{
 				return L"WAKE UP BEAN!";
 			}
 
-			try {
+			try
+			{
 				auto quoteObj = json::parse(JSON);
 				std::string quote = quoteObj["content"];
 				std::string author = quoteObj["title"];
@@ -38,17 +40,20 @@ namespace lospi {
 				StringToWString(mystr, conv_utf8(remove_html(filter_chars(text))));
 				return mystr;
 			}
-			catch (exception& e) {
+			catch (exception& e)
+			{
 				std::string error = e.what();
 				wclog << (std::wstring&)error << endl;
-				return L"";
+				return L"Error while processing Qotd";
 			}
 		}
 
 
-		std::string ReplaceAll(std::string str, const std::string& from, const std::string& to) {
+		std::string ReplaceAll(std::string str, const std::string& from, const std::string& to)
+		{
 			size_t start_pos = 0;
-			while ((start_pos = str.find(from, start_pos)) != std::string::npos) {
+			while ((start_pos = str.find(from, start_pos)) != std::string::npos)
+			{
 				str.replace(start_pos, from.length(), to);
 				start_pos += to.length(); // Handles case where 'to' is a substring of 'from'
 			}
@@ -64,7 +69,8 @@ namespace lospi {
 			return 0;
 		}
 
-		string buildRequest() {
+		string buildRequest()
+		{
 			string request;
 
 			request = "GET /wp-json/posts?filter[orderby]=rand&filter[posts_per_page]=1 HTTP/1.1\r\n";
@@ -79,12 +85,15 @@ namespace lospi {
 		}
 
 
-		string getData() {
+		string getData()
+		{
 
 			string servAddress = "quotesondesign.com"; // First arg: server address
 			string recvMessage;
 			unsigned short echoServPort = 80;
-			try {
+
+			try
+			{
 				// Establish connection with the echo server
 				TCPSocket sock(servAddress, echoServPort);
 
@@ -115,7 +124,8 @@ namespace lospi {
 				}
 
 			}
-			catch (SocketException &e) {
+			catch (SocketException &e)
+			{
 				cerr << e.what() << endl;
 				exit(1);
 			}
@@ -123,11 +133,9 @@ namespace lospi {
 			return recvMessage;
 		}
 
-		string isolateJSON(string *response) {
-
-			string resp = *response;
-			return resp.substr(resp.find("{"), resp.size() - resp.find("{") - 1);
-
+		string isolateJSON(string *response)
+		{
+			return (*response).substr((*response).find("{"), (*response).size() - (*response).find("{") - 1);
 		}
 
 		string removeQuotes(string s) {

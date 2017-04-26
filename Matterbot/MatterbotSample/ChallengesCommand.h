@@ -55,7 +55,8 @@ namespace lospi {
 			hashes = trim(hashes);
 			bot->post_message(L"rivestment try " + hashes);
 			
-			sleep(4000);
+			sleep(timer);
+
 			if (lvlChanged) {
 				lvlChanged = false;
 				bot->post_message(L"rivestment level " + std::to_wstring(level));
@@ -77,19 +78,6 @@ namespace lospi {
 
 		}
 
-		//void buildHashTable(int level, std::string old_hash = "", int depth = 1) {
-		//	for (int i = 0; i < 4; i++) {
-		//		if (depth >= level - 1) {
-		//			string test = old_hash + alphabet[i] + password;
-		//			hashtable[compute_md5(test.c_str(), (unsigned long)(depth - 1))] = to_tiny_val(old_hash + alphabet[i]);
-		//			numHashesBuilt++;
-		//		}
-		//		if (depth < level + 10) {
-		//			buildHashTable(level, old_hash + alphabet[i], depth + 1);
-		//		}
-		//	}
-		//}
-
 		void buildHashTable(int level) {
 
 			for (int i = level - 1; i < level + 10; i++) {
@@ -106,7 +94,7 @@ namespace lospi {
 
 		int calcHashTotal(int level = 1) {
 			int total = 0;
-			for (int i = level - 1; i <= level + 10; i++) {
+			for (int i = level - 1; i < level + 10; i++) {
 				total += (int)pow(4, i);
 			}
 			return total;
@@ -126,52 +114,6 @@ namespace lospi {
 			return text;
 		}
 
-		/*void checkHashes(std::vector<std::wstring> hashes) {
-			
-
-			for (int i = 0; i < hashes.size(); i++) {
-				
-				std::wstring retn = crackHash(hashes[i]);
-
-				if (retn != L"")
-				{
-					bot->post_message(L"rivestment try " + retn);
-					sleep(1000);
-				}
-				else
-				{
-					bot->post_message(L"Could not crack " + hashes[i]);
-					sleep(1000);
-				}
-
-			}
-		}
-
-		std::wstring crackHash(std::wstring hash, std::wstring old_brute = L"", int depth = 0) {
-
-			for (int i = 0; i < 4; i++) {
-				std::wstring alphabet = L"hsoj";
-				std::wstring new_brute = old_brute + alphabet[i];
-				std::wstring tmp = new_brute + password;
-				std::string tmp2 = wstring_to_string(tmp);
-				char * tmp3 = (char *)calloc(1, tmp2.size());
-				strcpy(tmp3, tmp2.c_str());
-				auto md5 = compute_md5(tmp3, tmp2.size());
-				std::wstring mymd5_str = get_str_from_md5(md5);
-				if (mymd5_str == hash)
-				{
-					return tmp;
-				}
-				else if (depth < 10)
-				{
-					std::wstring retn = crackHash(hash, new_brute, depth + 1);
-					if (retn != L"") {
-						return retn;
-					}
-				}
-			}
-			return L"";
-		}*/
 		// trim from start
 		static inline std::wstring &ltrim(std::wstring &s) {
 			s.erase(s.begin(), std::find_if(s.begin(), s.end(),
@@ -220,28 +162,4 @@ namespace lospi {
 	private:
 		std::shared_ptr<Matterbot> bot;
 	};
-
-	//Does the same thing as the challenge command...
-	struct ScrapsCommand : ICommand {
-		explicit ScrapsCommand(std::shared_ptr<Matterbot> bot, std::shared_ptr<ChallengesCommand> challenges) 
-		{ 
-			this->bot = bot;
-			this->challenges = challenges;
-		};
-		std::wstring get_name() override { return L"scraps"; }
-
-
-		std::wstring get_help() override { return L"`scraps`: `scraps` loads the hashes and begins crunching."; }
-
-		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
-			const std::wstring& user, const std::wstring& command_text) override {
-
-			return challenges->handle_command(team, channel, user, command_text);
-			
-		};
-	private:
-		std::shared_ptr<Matterbot> bot;
-		std::shared_ptr<ChallengesCommand> challenges;
-	};
 }
-#pragma once

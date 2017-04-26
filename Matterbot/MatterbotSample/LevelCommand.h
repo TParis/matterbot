@@ -11,9 +11,6 @@ namespace lospi {
 
 	int level = 1;
 	bool lvlChanged = false;
-	long unsigned int numHashesBuilt = 0;
-	long unsigned int toBuild;
-	long unsigned int left;
 	bool hashesBuilt = false;
 
 	struct LevelCommand : ICommand {
@@ -24,38 +21,24 @@ namespace lospi {
 
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
-			if (user != L"tparis00ap") {
+
+			if (user != L"tparis00ap")
+			{
 				return L"Level has been changed to your mom riding a tyrannosaurus shooting a bazooka at flamingos.";
 			}
-			level = std::stoi(command_text);
-			lvlChanged = true;
-			hashesBuilt = false;
-			return L"Level has been changed to " + std::to_wstring(level);
-		}
-	private:
-		std::shared_ptr<Matterbot> bot;
-	};
-	struct StatusCommand : ICommand {
-		explicit StatusCommand(std::shared_ptr<Matterbot> bot) : bot{ bot } { }
-		std::wstring get_name() override { return L"status"; }
 
-		std::wstring get_help() override { return L"`level`: `level` changes the game level."; }
+			if (std::stoi(command_text) > 0 && std::stoi(command_text) < 6)
+			{
+				level = std::stoi(command_text);
+				lvlChanged = true;
+				hashesBuilt = false;
+				return L"Level has been changed to " + std::to_wstring(level);
+			}
+			else
+			{
+				return L"Cannot change the level to number specified";
+			}
 
-		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
-			const std::wstring& user, const std::wstring& command_text) override {
-			
-			left = toBuild - numHashesBuilt;
-			double prct = ((double)numHashesBuilt / toBuild) * 100.00;
-			std::string response = "```Hashes built: ";
-			response += std::to_string(numHashesBuilt);
-			response += "\nBuilding:     ";
-			response += std::to_string(toBuild);
-			response += "\nLeft:         ";
-			response += std::to_string(left);
-			response += "\nPercent:      ";
-			response += std::to_string(prct);
-			response += "%```";
-			return string_to_wstring(response);
 		}
 	private:
 		std::shared_ptr<Matterbot> bot;

@@ -155,7 +155,7 @@
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
       <GenerateDebugInformation>true</GenerateDebugInformation>
-      <AdditionalDependencies>Matterbot.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Matterbot.lib;ws2_32.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
@@ -163,6 +163,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="Md5.cpp" />
     <ClCompile Include="Md5Utilities.cpp" />
+    <ClCompile Include="PracticalSocket.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Matterbot\Matterbot.vcxproj">
@@ -177,14 +178,19 @@
     <ClInclude Include="EchoCommand.h" />
     <ClInclude Include="ConsoleLogger.h" />
     <ClInclude Include="GetPassword.h" />
+    <ClInclude Include="HRestartCommand.h" />
     <ClInclude Include="LevelCommand.h" />
+    <ClInclude Include="main.h" />
     <ClInclude Include="Md5.h" />
     <ClInclude Include="Md5Utilities.h" />
     <ClInclude Include="NumberCommand.h" />
     <ClInclude Include="QotdCommand.h" />
     <ClInclude Include="RestartCommand.h" />
     <ClInclude Include="ReverseCommand.h" />
+    <ClInclude Include="ScrapsCommand.h" />
     <ClInclude Include="StartCommand.h" />
+    <ClInclude Include="StatusCommand.h" />
+    <ClInclude Include="TimerCommand.h" />
     <ClInclude Include="WeatherCommand.h" />
   </ItemGroup>
   <ItemGroup>
