@@ -175,6 +175,7 @@
     <ClInclude Include="..\Matterbot\PracticalSocket.h" />
     <ClInclude Include="..\Matterbot\targetver.h" />
     <ClInclude Include="ChallengesCommand.h" />
+    <ClInclude Include="config.h" />
     <ClInclude Include="EchoCommand.h" />
     <ClInclude Include="ConsoleLogger.h" />
     <ClInclude Include="GetPassword.h" />

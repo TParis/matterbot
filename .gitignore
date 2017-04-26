@@ -257,3 +257,5 @@ paket-files/
 *.sln.iml
 B
 
+#custom project
+config.h

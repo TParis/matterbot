@@ -1,4 +1,5 @@
 #include "Matterbot.h"
+#include "config.h"
 #include "main.h"
 #include <iostream>
 #include <sstream>
@@ -27,14 +28,10 @@ using namespace std;
 using namespace lospi;
 
 int main() {
-  wstring mattermost_url = L"https://hooks.slack.com/",
-    incoming_hook_route = L"services/T4Z1QAKSS/B50MWS6CX/YJmejxyLjz50lvPrk4FUrYUe",
-    outgoing_hook_route = L"http://127.0.0.1:4928/",
-    outgoing_hook_token = L"3q3YsAQD376YdVsU5uTjWKh5",
-    welcome_message = L"bot is running.";
+  wstring welcome_message = L"bot is running.";
 
   try {
-    auto bot = make_shared<Matterbot>(mattermost_url, incoming_hook_route, outgoing_hook_route, outgoing_hook_token);
+    auto bot = make_shared<Matterbot>(MATTERMOST_URL, INC_HOOK_ROUTE, OUT_HOOK_ROUTE, OUT_HOOK_TOKEN);
     bot->set_logger(make_unique<ConsoleLogger>());
 	bot->register_command(make_shared<EchoCommand>());
 	bot->register_command(make_shared<ReverseCommand>(bot));

@@ -49,7 +49,7 @@ namespace lospi {
 
 			sleep(timer);
 
-			return L"rivestment challenge" + std::to_wstring(number);
+			return L"rivestment challenge " + std::to_wstring(number);
 		}
 
 		int processFlags(std::wstring command_text) {
