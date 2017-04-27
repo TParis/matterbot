@@ -37,19 +37,19 @@ namespace lospi {
 				return L"Error processing flags";
 			}
 
-			bot->post_message(L"rivestment register sporkbot");
+			bot->post_message(L"bananabot register sporkbot");
 
-			bot->post_message(L"rivestment password");
+			bot->post_message(L"bananabot password");
 
 			if (lvlChanged)
 			{
-				bot->post_message(L"rivestment level " + std::to_wstring(level));
+				bot->post_message(L"bananabot level " + std::to_wstring(level));
 				lvlChanged = false;
 			}
 
 			sleep(timer);
 
-			return L"rivestment challenge " + std::to_wstring(number);
+			return L"bananabot challenge " + std::to_wstring(number);
 		}
 
 		int processFlags(std::wstring command_text) {
@@ -96,6 +96,8 @@ namespace lospi {
 					i++;
 				}
 			}
+
+			return 1;
 
 		}
 	private:

@@ -21,17 +21,17 @@ namespace lospi {
 				return L"Yeah, nope...";
 			}
 			
-			bot->post_message(L"rivestment password");
+			bot->post_message(L"bananabot password");
 			
 			if (lvlChanged)
 			{
 				lvlChanged = false;
-				bot->post_message(L"rivestment level " + std::to_wstring(level));
+				bot->post_message(L"bananabot level " + std::to_wstring(level));
 			}
 
 			sleep(timer);
 
-			return L"rivestment scraps";
+			return L"bananabot scraps";
 		}
 	private:
 		std::shared_ptr<Matterbot> bot;

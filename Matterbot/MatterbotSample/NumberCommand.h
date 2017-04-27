@@ -13,7 +13,7 @@ namespace lospi {
 		explicit NumberCommand(std::shared_ptr<Matterbot> bot) : bot{ bot } { }
 		std::wstring get_name() override { return L"number"; }
 
-		std::wstring get_help() override { return L"`number`: `number` changes the number of challenges requested by rivestment"; }
+		std::wstring get_help() override { return L"`number`: `number` changes the number of challenges requested by bananabot"; }
 
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {

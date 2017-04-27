@@ -37,7 +37,7 @@ namespace lospi {
 
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
-			if (user != L"rivestment") {
+			if (user != L"bananabot") {
 				return L"Jealous much?";
 			}
 			running = true;
@@ -53,15 +53,15 @@ namespace lospi {
 			std::wstring hashes{ 0 };
 			hashes = checkHashes();
 			hashes = trim(hashes);
-			bot->post_message(L"rivestment try " + hashes);
+			bot->post_message(L"bananabot try " + hashes);
 			
 			sleep(timer);
 
 			if (lvlChanged) {
 				lvlChanged = false;
-				bot->post_message(L"rivestment level " + std::to_wstring(level));
+				bot->post_message(L"bananabot level " + std::to_wstring(level));
 			}
-			return L"rivestment challenge " + std::to_wstring(number);
+			return L"bananabot challenge " + std::to_wstring(number);
 
 		}
 

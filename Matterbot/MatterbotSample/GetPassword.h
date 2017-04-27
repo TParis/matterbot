@@ -13,12 +13,12 @@ namespace lospi {
 		explicit PasswordCommand(std::shared_ptr<Matterbot> bot) : bot{ bot } { }
 		std::wstring get_name() override { return L"password"; }
 
-		std::wstring get_help() override { return L"`password`: `password` saves the password given by rivestment"; }
+		std::wstring get_help() override { return L"`password`: `password` saves the password given by bananabot"; }
 
 		std::wstring handle_command(const std::wstring& team, const std::wstring& channel,
 			const std::wstring& user, const std::wstring& command_text) override {
 
-			if (user != L"rivestment")
+			if (user != L"bananabot")
 			{
 				return L"Cmon...seriously?";
 			}
@@ -27,7 +27,7 @@ namespace lospi {
 			{
 				password = wstring_to_string(command_text);
 				bot->post_message(L"Password has been updated to " + string_to_wstring(password));
-				return L"rivestment level " + std::to_wstring(level);
+				return L"bananabot level " + std::to_wstring(level);
 			}
 			else
 			{

@@ -23,22 +23,22 @@ namespace lospi {
 			
 			if (running)
 			{
-				bot->post_message(L"rivestment quit");
+				bot->post_message(L"bananabot quit");
 			}
 
-			bot->post_message(L"rivestment register sporkbot");
+			bot->post_message(L"bananabot register sporkbot");
 
-			bot->post_message(L"rivestment password");
+			bot->post_message(L"bananabot password");
 
 			if (lvlChanged)
 			{
-				bot->post_message(L"rivestment level " + std::to_wstring(level));
+				bot->post_message(L"bananabot level " + std::to_wstring(level));
 				lvlChanged = false;
 			}
 
 			sleep(timer);
 
-			return L"rivestment challenge " + std::to_wstring(number);
+			return L"bananabot challenge " + std::to_wstring(number);
 		}
 	private:
 		std::shared_ptr<Matterbot> bot;
